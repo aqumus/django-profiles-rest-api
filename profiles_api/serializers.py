@@ -1,7 +1,7 @@
 from dataclasses import fields
 from rest_framework import serializers
 
-from profiles_api.models import UserProfile
+from profiles_api.models import UserProfile, UserProfileStatusFeed
 
 class HelloSerializer(serializers.Serializer):
     """Serializes name field for HelloAPIView"""
@@ -37,3 +37,14 @@ class UserProfileSerializer(serializers.ModelSerializer):
             instance.set_password(password)
         
         return super().update(instance, validated_data)
+
+
+class UserProfileStatusFeedSerializer(serializers.ModelSerializer):
+    """Serializer for user profile feed model"""
+
+    class Meta:
+        model=UserProfileStatusFeed
+        fields=('id', 'status_text', 'user_profile', 'created_on', 'modified_at')
+        extra_kwargs = {
+            'user_profile': { "read_only": True}
+        }
